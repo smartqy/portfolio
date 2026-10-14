@@ -1,8 +1,8 @@
-import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import { useLang } from "@/i18n";
 import { ContactSection } from "./contact-section";
 import { FunSection } from "./fun-section";
+import { ProjectsSection } from "./projects-section";
 import type { CardKey } from "./quick-actions";
 
 const cardClass = "rounded-2xl border border-border bg-card p-5 shadow-[0_1px_2px_rgb(0_0_0/0.03),0_8px_24px_-12px_rgb(15_118_110/0.12)] backdrop-blur-md";
@@ -52,52 +52,52 @@ function MeCard() {
         </div>
       </div>
       <p className="leading-relaxed">{profile.about}</p>
-    </div>
-  );
-}
 
-function ProjectsCard() {
-  const { p: profile, ui } = useLang();
-  return (
-    <div>
-      <SectionTitle {...ui.sections.projects} />
-      <div className="grid gap-4 sm:grid-cols-2">
-        {profile.projects.map((p) => {
-          const inner = (
-            <>
-              <div className="flex items-start justify-between gap-3">
-                <h3 className="font-semibold">{p.title}</h3>
-                <span className="flex shrink-0 items-center gap-1 text-xs text-muted">
-                  {p.date}
-                  {p.link && <ArrowUpRight className="size-4 transition group-hover:text-accent" />}
-                </span>
+      <div className="grid gap-4 sm:grid-cols-5">
+        {/* 经历 */}
+        <div className={`${cardClass} sm:col-span-3`}>
+          <h3 className="mb-4 text-sm font-medium text-muted">{ui.experienceTitle}</h3>
+          {profile.experience.map((job) => (
+            <div key={job.company} className="space-y-3">
+              <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                <div>
+                  <p className="font-semibold">
+                    {job.role} · {job.company}
+                  </p>
+                  <p className="text-sm text-muted">{job.companyNote}</p>
+                </div>
+                <span className="text-xs text-muted tabular-nums">{job.period}</span>
               </div>
-              <p className="mt-2 text-sm leading-relaxed text-muted">{p.description}</p>
-              <div className="mt-4 flex flex-wrap gap-1.5">
-                {p.tags.map((t) => (
-                  <span key={t} className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs text-accent">
-                    {t}
-                  </span>
+              <ul className="space-y-2 text-sm leading-relaxed text-foreground/80">
+                {job.highlights.map((h) => (
+                  <li key={h} className="flex gap-2.5">
+                    <span className="mt-2 size-1.5 shrink-0 rounded-full bg-accent/60" />
+                    {h}
+                  </li>
                 ))}
-              </div>
-            </>
-          );
-          return p.link ? (
-            <a
-              key={p.title}
-              href={p.link}
-              target="_blank"
-              rel="noreferrer"
-              className={`${cardClass} group transition hover:-translate-y-0.5 hover:shadow-md`}
-            >
-              {inner}
-            </a>
-          ) : (
-            <div key={p.title} className={cardClass}>
-              {inner}
+              </ul>
             </div>
-          );
-        })}
+          ))}
+        </div>
+
+        {/* 教育背景 */}
+        <div className={`${cardClass} sm:col-span-2`}>
+          <h3 className="mb-4 text-sm font-medium text-muted">{ui.educationTitle}</h3>
+          <ol className="relative space-y-5 border-l border-border pl-5">
+            {profile.education.map((e, i) => (
+              <li key={e.school} className="relative">
+                <span
+                  className={`absolute top-1.5 -left-[25px] size-2.5 rounded-full ring-4 ring-card ${
+                    i === 0 ? "bg-accent" : "bg-border"
+                  }`}
+                />
+                <p className="font-semibold">{e.school}</p>
+                <p className="text-sm text-muted">{e.degree}</p>
+                <p className="mt-0.5 text-xs text-muted tabular-nums">{e.period}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
       </div>
     </div>
   );
@@ -128,7 +128,7 @@ function SkillsCard() {
 
 export const CARDS: Record<CardKey, () => React.JSX.Element> = {
   me: MeCard,
-  projects: ProjectsCard,
+  projects: ProjectsSection,
   skills: SkillsCard,
   fun: FunSection,
   contact: ContactSection,

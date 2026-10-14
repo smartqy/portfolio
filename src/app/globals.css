@@ -24,7 +24,6 @@
   --icon-fun: #b0559a;
   --icon-contact: #b88a2f;
   --aura-opacity: 0.75; /* 头像背后的光环 */
-  --watermark: rgb(28 37 34 / 0.045); /* 底部大字水印 */
   color-scheme: light;
 }
 
@@ -48,7 +47,6 @@
   --icon-fun: #d98bc4;
   --icon-contact: #dcb563;
   --aura-opacity: 0.35;
-  --watermark: rgb(255 255 255 / 0.035);
   color-scheme: dark;
 }
 

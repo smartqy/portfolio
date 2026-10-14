@@ -17,7 +17,7 @@ const item: Variants = {
 };
 
 export function Hero({ onAsk, onSelect }: { onAsk: (q: string) => void; onSelect: (key: CardKey) => void }) {
-  const { p: profile } = useLang();
+  const { p: profile, lang } = useLang();
 
   return (
     <motion.section
@@ -42,7 +42,12 @@ export function Hero({ onAsk, onSelect }: { onAsk: (q: string) => void; onSelect
       <motion.div variants={item} className="space-y-3">
         <h1 className="text-4xl font-semibold tracking-tight sm:text-6xl">
           {profile.greeting}{" "}
-          <span className="font-display bg-linear-to-r from-teal-600 via-emerald-500 to-sky-500 bg-clip-text pr-[0.12em] text-[1.18em] font-normal italic text-transparent dark:from-teal-300 dark:via-emerald-300 dark:to-sky-300">
+          <span
+            className={`bg-linear-to-r from-teal-600 via-emerald-500 to-sky-500 bg-clip-text text-transparent dark:from-teal-300 dark:via-emerald-300 dark:to-sky-300 ${
+              // 衬线斜体只有拉丁字形，中文名用无衬线粗体，避免浏览器硬"压斜"
+              lang === "zh" ? "pr-[0.05em]" : "font-display pr-[0.12em] text-[1.18em] font-normal italic"
+            }`}
+          >
             {profile.name}
           </span>
           <motion.span
@@ -75,13 +80,6 @@ export function Hero({ onAsk, onSelect }: { onAsk: (q: string) => void; onSelect
         <QuickActions onSelect={onSelect} />
       </motion.div>
 
-      {/* 底部超大名字水印 */}
-      <div
-        aria-hidden
-        className="font-display pointer-events-none fixed inset-x-0 -bottom-[0.32em] -z-10 text-center text-[28vw] leading-none text-(--watermark) italic select-none"
-      >
-        {profile.name}
-      </div>
     </motion.section>
   );
 }

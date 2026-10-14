@@ -24,8 +24,8 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: `${profile.name}'s Portfolio`,
-  description: `${profile.name} 的 AI 个人作品集 · AI portfolio of ${profile.name}`,
+  title: `${profile.name.en} · ${profile.name.zh} | Portfolio`,
+  description: `${profile.name.zh} 的 AI 个人作品集 · AI portfolio of ${profile.name.en}`,
 };
 
 // 在页面渲染前确定明暗主题，避免刷新时闪一下：用户选过就用选择的，否则跟随系统

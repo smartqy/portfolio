@@ -31,6 +31,7 @@ function buildSystemPrompt(lang: Lang) {
 ${JSON.stringify(
   {
     name: p.name,
+    otherName: lang === "zh" ? profile.name.en : profile.name.zh,
     age: p.age,
     role: p.role,
     location: p.location,
@@ -38,6 +39,8 @@ ${JSON.stringify(
     bio: p.bio,
     about: p.about,
     interests: p.interests,
+    experience: p.experience,
+    education: p.education,
     projects: p.projects,
     skills: p.skills,
     fun: p.fun,

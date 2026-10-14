@@ -15,7 +15,7 @@ const UI = {
     more: "更多问题",
     moreQuestions: ["你的求职意向是什么？", "你最有成就感的项目是哪个？", "你的优势是什么？", "你为什么喜欢写代码？"],
     sections: {
-      projects: { title: "项目", subtitle: "最近做的一些东西" },
+      projects: { title: "项目", subtitle: "从 AI Agent 到计算机视觉，这些是我动手做过的东西" },
       skills: { title: "技能", subtitle: "我的技术栈" },
       fun: { title: "生活", subtitle: "工作之外的我" },
       funHeading: { lead: "工作之外的", accent: "我", subtitle: "写代码之外，这些事情让我保持好奇和快乐。" },
@@ -32,6 +32,9 @@ const UI = {
       copied: "已复制",
     },
     networkError: "网络好像出了点问题，请稍后再试。",
+    experienceTitle: "经历",
+    educationTitle: "教育背景",
+    projectFilters: { all: "全部", ai: "AI & Agent", cv: "计算机视觉", systems: "系统与后端", algo: "算法" },
     wechat: "微信",
     questions: {
       me: "介绍一下你自己吧",
@@ -63,7 +66,7 @@ const UI = {
       "Why do you love coding?",
     ],
     sections: {
-      projects: { title: "Projects", subtitle: "Things I've built recently" },
+      projects: { title: "Projects", subtitle: "From AI agents to computer vision — things I've built" },
       skills: { title: "Skills", subtitle: "My tech stack" },
       fun: { title: "Fun", subtitle: "Me outside of work" },
       funHeading: { lead: "When I'm", accent: "offline", subtitle: "Away from the keyboard, these keep me curious and happy." },
@@ -80,6 +83,9 @@ const UI = {
       copied: "Copied",
     },
     networkError: "Something went wrong with the network. Please try again later.",
+    experienceTitle: "Experience",
+    educationTitle: "Education",
+    projectFilters: { all: "All", ai: "AI & Agents", cv: "Computer Vision", systems: "Systems & Backend", algo: "Algorithms" },
     wechat: "WeChat",
     questions: {
       me: "Tell me about yourself",
