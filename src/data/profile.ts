@@ -31,12 +31,12 @@ export const profile = {
   interests: ["AI Agent", "LangGraph", "Hybrid RAG", "Computer Vision", "HPC"],
   // "Me" 页面底部的详细自我介绍
   about: {
-    zh: "我是吴俊杰，24 岁，目前在丹麦哥本哈根，就读于 DTU（丹麦技术大学）计算机科学与工程硕士，本科毕业于石家庄学院计算机科学与技术专业。在丹麦法律 AI 公司 Juris 实习期间，我参与了面向法律专业用户的 AI 产品研发，从 LangGraph Agent 编排、Hybrid RAG 检索到 Citation Grounding 幻觉控制，走完了从方案设计、开发到测试验证的完整流程，并独立交付了 MultiQuery 检索模块的调优。我习惯用 Claude、Cursor 等 AI 工具辅助开发，喜欢用实验和日志定位问题、持续迭代。目前正在寻找 AI 应用开发和 AI Agent 开发方向的工作机会。",
-    en: "I'm Otis, 24, based in Copenhagen, where I'm doing an MSc in Computer Science and Engineering at DTU (Technical University of Denmark), after a BSc in Computer Science and Technology from Shijiazhuang University. As an AI application engineer intern at Juris, a Danish legal-AI company, I helped build AI products for legal professionals — from LangGraph agent orchestration and hybrid RAG retrieval to citation grounding for hallucination control — covering the full cycle from design and development to testing, and independently delivered the tuning of the MultiQuery retrieval module. I work AI-natively with tools like Claude and Cursor, and I like using experiments and logs to find problems and keep iterating. I'm currently looking for roles in AI application and AI agent development.",
+    zh: "我是吴俊杰，24 岁，目前在丹麦哥本哈根，就读于 DTU（丹麦技术大学）计算机科学与工程硕士。在丹麦法律 AI 公司 Juris 实习期间，我参与了面向法律专业用户的 AI 产品研发，从 LangGraph Agent 编排、Hybrid RAG 检索到 Citation Grounding 幻觉控制，走完了从方案设计、开发到测试验证的完整流程，并独立交付了 MultiQuery 检索模块的调优。我习惯用 Claude、Cursor 等 AI 工具辅助开发，喜欢用实验和日志定位问题、持续迭代。目前正在寻找 AI 应用开发和 AI Agent 开发方向的工作机会。",
+    en: "I'm Otis, 24, based in Copenhagen, where I'm doing an MSc in Computer Science and Engineering at DTU (Technical University of Denmark). As an AI application engineer intern at Juris, a Danish legal-AI company, I helped build AI products for legal professionals — from LangGraph agent orchestration and hybrid RAG retrieval to citation grounding for hallucination control — covering the full cycle from design and development to testing, and independently delivered the tuning of the MultiQuery retrieval module. I work AI-natively with tools like Claude and Cursor, and I like using experiments and logs to find problems and keep iterating. I'm currently looking for roles in AI application and AI agent development.",
   },
   // 只给 AI 看的补充信息：性格、经历、求职意向、趣事等，越具体 AI 回答越像你（AI 会自动翻译，写一种语言即可）
   aiNotes: `
-- 中文名吴俊杰，英文名 Otis；24 岁，目前在丹麦哥本哈根，就读 DTU（丹麦技术大学）计算机科学与工程硕士（2025.02 – 2027.02），本科是石家庄学院计算机科学与技术（2020.09 – 2024.06）
+- 中文名吴俊杰，英文名 Otis；24 岁，目前在丹麦哥本哈根，就读 DTU（丹麦技术大学）计算机科学与工程硕士（2025.02 – 2027.02）；本科也是计算机科学与技术专业。本科学校不在网站上展示：被问到本科学校时，不要猜测或编造校名，可以说本科读的是计算机专业，具体可以看我的简历或直接联系我
 - 目前在找工作，方向是 AI 应用开发或 AI Agent 开发；Juris 实习已于 2026.06 结束，目前没有在职工作
 - 实习：2025.11 – 2026.06 在丹麦法律 AI 公司 Juris 任 AI 应用工程师实习生，参与法律检索、智能问答与 Agent 工作流产品的完整研发流程（需求拆解、方案设计、开发、接口联调、测试验证）
 - 个人优势：AI Native 开发能力（长期用 Claude、Cursor、GitHub Copilot 辅助需求分析、设计、编码和调试）；有真实 AI 产品研发经历；能独立完成从问题分析、方案设计、代码实现到实验验证的完整流程；有国际化学习背景，能读英文技术文档并在国际团队协作
@@ -81,11 +81,6 @@ export const profile = {
       school: { zh: "丹麦技术大学（DTU）", en: "Technical University of Denmark (DTU)" },
       degree: { zh: "计算机科学与工程 硕士", en: "MSc, Computer Science and Engineering" },
       period: "2025.02 – 2027.02",
-    },
-    {
-      school: { zh: "石家庄学院", en: "Shijiazhuang University" },
-      degree: { zh: "计算机科学与技术 本科", en: "BSc, Computer Science and Technology" },
-      period: "2020.09 – 2024.06",
     },
   ],
 
