@@ -9,10 +9,10 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.134.0",
     "framer-motion": "^14.2.0",
     "lucide-react": "^1.57.0",
     "next": "15.5.28",
+    "openai": "^7.34.0",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },

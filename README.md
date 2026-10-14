@@ -1,12 +1,12 @@
 # AI 个人作品集
 
-一个带 AI 分身的个人网站：访客可以直接提问，由 Claude 以你的身份回答，并自动弹出项目、技能、联系方式等卡片。
+一个带 AI 分身的个人网站：访客可以直接提问，由 AI（DeepSeek）以你的身份回答，并自动弹出项目、技能、联系方式等卡片。
 
 ## 快速开始
 
 ```bash
 npm install
-cp .env.example .env.local   # 填入 ANTHROPIC_API_KEY
+cp .env.example .env.local   # 填入 DEEPSEEK_API_KEY
 npm run dev                  # 打开 http://localhost:3000
 ```
 
@@ -25,8 +25,8 @@ npm run dev                  # 打开 http://localhost:3000
 
 ## 部署
 
-推荐 [Vercel](https://vercel.com)：把项目推到 GitHub → 在 Vercel 导入 → 在 Environment Variables 中添加 `ANTHROPIC_API_KEY` → 绑定自己的域名。
+推荐 [Vercel](https://vercel.com)：把项目推到 GitHub → 在 Vercel 导入 → 在 Environment Variables 中添加 `DEEPSEEK_API_KEY` → 绑定自己的域名。
 
 ## 技术栈
 
-Next.js 15 (App Router) · TypeScript · Tailwind CSS v4 · Framer Motion · Claude API（`claude-opus-5-5`，流式输出）
+Next.js 15 (App Router) · TypeScript · Tailwind CSS v4 · Framer Motion · DeepSeek API（`deepseek-flash`，通过 OpenAI SDK 流式输出）

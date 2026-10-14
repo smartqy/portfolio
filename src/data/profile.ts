@@ -48,7 +48,7 @@ export const profile = {
         zh: "就是你正在看的这个网站：用 Next.js 搭建，内置一个能代表我回答问题的 AI 助手。",
         en: "The site you're looking at: built with Next.js, with an AI assistant that answers questions on my behalf.",
       },
-      tags: ["Next.js", "TypeScript", "Tailwind", "Claude API"],
+      tags: ["Next.js", "TypeScript", "Tailwind", "DeepSeek API"],
       link: "https://github.com/smartqy/portfolio",
       date: "2026",
     },
@@ -78,7 +78,7 @@ export const profile = {
     { category: { zh: "前端", en: "Frontend" }, items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Mini Programs"] },
     { category: { zh: "后端", en: "Backend" }, items: ["Node.js", "Python", "Java", "REST API"] },
     { category: { zh: "云 & 工具", en: "Cloud & Tools" }, items: ["Docker", "Azure", "Git", "Vercel"] },
-    { category: { zh: "AI", en: "AI" }, items: ["LLM Apps", "Prompt Engineering", "Claude API"] },
+    { category: { zh: "AI", en: "AI" }, items: ["LLM Apps", "Prompt Engineering", "DeepSeek API"] },
   ],
 
   fun: [
