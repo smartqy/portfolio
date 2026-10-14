@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CARDS } from "@/components/cards";
 import { ChatInput } from "@/components/chat-input";
 import { FollowAvatar } from "@/components/follow-avatar";
@@ -48,8 +48,24 @@ export default function Home() {
   const [view, setView] = useState<View | null>(null);
   const [loading, setLoading] = useState(false);
   const [showQuick, setShowQuick] = useState(true);
+  // 往下滑时自动收起底部的快捷按钮，往上滑时再出现（手机上避免滑到底时误触按钮）
+  const [scrollingDown, setScrollingDown] = useState(false);
+
+  useEffect(() => {
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (Math.abs(y - lastY) < 8) return;
+      setScrollingDown(y > lastY && y > 80);
+      lastY = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   function showSection(key: CardKey) {
+    // 点的是当前已经打开的板块：什么都不做，避免误触时跳回顶部
+    if (view?.kind === "section" && view.key === key) return;
     const intro = key === "me" ? ui.intros.me(profile.name, profile.role) : ui.intros[key];
     setMessages((prev) => [
       ...prev,
@@ -57,6 +73,7 @@ export default function Home() {
       { id: nextId++, role: "assistant", text: intro, cards: [key] },
     ]);
     setView({ kind: "section", id: nextId++, key });
+    setScrollingDown(false);
     window.scrollTo({ top: 0 });
   }
 
@@ -121,7 +138,7 @@ export default function Home() {
             <TopControls className="absolute top-1/2 right-0 -translate-y-1/2" />
           </header>
 
-          <div className="flex-1 pt-4 pb-72">
+          <div className="flex-1 pt-4 pb-48">
             <AnimatePresence mode="wait">
               <motion.div
                 key={view.id}
@@ -166,23 +183,37 @@ export default function Home() {
           </div>
 
           <div className="fixed inset-x-0 bottom-0 z-10 bg-linear-to-t from-background via-background/90 to-transparent px-4 pt-10 pb-4">
-            <div className="mx-auto max-w-3xl space-y-3">
-              <button
-                type="button"
-                onClick={() => setShowQuick((s) => !s)}
-                className="mx-auto flex items-center gap-1 text-sm text-muted transition hover:text-foreground"
-              >
-                {showQuick ? <ChevronDown className="size-4" /> : <ChevronUp className="size-4" />}
-                {showQuick ? ui.hideQuick : ui.showQuick}
-              </button>
-              {showQuick && (
-                <QuickActions
-                  onSelect={showSection}
-                  onAsk={ask}
-                  active={view.kind === "section" ? view.key : undefined}
-                  compact
-                />
-              )}
+            <div className="mx-auto max-w-3xl">
+              <AnimatePresence initial={false}>
+                {!scrollingDown && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <div className="space-y-3 pb-3">
+                      <button
+                        type="button"
+                        onClick={() => setShowQuick((s) => !s)}
+                        className="mx-auto flex items-center gap-1 text-sm text-muted transition hover:text-foreground"
+                      >
+                        {showQuick ? <ChevronDown className="size-4" /> : <ChevronUp className="size-4" />}
+                        {showQuick ? ui.hideQuick : ui.showQuick}
+                      </button>
+                      {showQuick && (
+                        <QuickActions
+                          onSelect={showSection}
+                          onAsk={ask}
+                          active={view.kind === "section" ? view.key : undefined}
+                          compact
+                        />
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
               <ChatInput onSubmit={ask} disabled={loading} />
             </div>
           </div>
