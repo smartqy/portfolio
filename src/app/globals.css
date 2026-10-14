@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+/* dark: 前缀跟随网页上的明暗开关（<html data-theme="dark">），而不是系统设置 */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* 清新雾感配色：暖雾白底 + 薄荷 / 天蓝光晕 + 深青绿强调色 */
+:root {
+  --background: #f5f7f4;
+  --foreground: #1c2522;
+  --muted: #6b7a74;
+  --card: rgb(255 255 255 / 0.72);
+  --border: rgb(28 37 34 / 0.08);
+  --accent: #0f766e;
+  --accent-foreground: #ffffff;
+  --glow-1: rgb(167 243 208 / 0.55); /* 薄荷 */
+  --glow-2: rgb(186 230 253 / 0.5); /* 天蓝 */
+  --glow-3: rgb(254 240 199 / 0.45); /* 一点暖杏色，避免整体发冷 */
+  --grain-opacity: 0.035;
+  --cursor-glow: rgb(45 212 191 / 0.35); /* 鼠标光晕 */
+  /* 快捷按钮图标：低饱和的柔和色 */
+  --icon-me: #3f8f8a;
+  --icon-projects: #4f8f5b;
+  --icon-skills: #7c6fd6;
+  --icon-fun: #b0559a;
+  --icon-contact: #b88a2f;
+  --aura-opacity: 0.75; /* 头像背后的光环 */
+  --watermark: rgb(28 37 34 / 0.045); /* 底部大字水印 */
+  color-scheme: light;
+}
+
+/* 暗色模式：由 <html data-theme="dark"> 控制，默认跟随系统（见 layout.tsx 里的脚本） */
+:root[data-theme="dark"] {
+  --background: #0c1311;
+  --foreground: #e6efeb;
+  --muted: #8fa39b;
+  --card: rgb(255 255 255 / 0.04);
+  --border: rgb(255 255 255 / 0.08);
+  --accent: #5eead4;
+  --accent-foreground: #042f2e;
+  --glow-1: rgb(20 184 166 / 0.16);
+  --glow-2: rgb(56 189 248 / 0.1);
+  --glow-3: rgb(16 185 129 / 0.06);
+  --grain-opacity: 0.05;
+  --cursor-glow: rgb(94 234 212 / 0.25);
+  --icon-me: #6cc5bf;
+  --icon-projects: #7fc28c;
+  --icon-skills: #a99ef0;
+  --icon-fun: #d98bc4;
+  --icon-contact: #dcb563;
+  --aura-opacity: 0.35;
+  --watermark: rgb(255 255 255 / 0.035);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --font-sans: var(--font-geist-sans), "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-instrument-serif), "Songti SC", serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: color-mix(in oklab, var(--accent) 22%, transparent);
+}
+
+.bg-glow {
+  background:
+    radial-gradient(48rem 36rem at 8% -6%, var(--glow-1), transparent 65%),
+    radial-gradient(44rem 34rem at 100% 18%, var(--glow-2), transparent 65%),
+    radial-gradient(40rem 30rem at 50% 110%, var(--glow-3), transparent 65%),
+    var(--background);
+  background-attachment: fixed;
+}
+
+/* 细颗粒噪点，让大面积渐变不显得廉价 */
+.bg-glow::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* 切换明暗时，新主题从开关位置以圆形扩散开（由 theme-toggle.tsx 驱动） */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
