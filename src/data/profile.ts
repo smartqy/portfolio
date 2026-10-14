@@ -49,7 +49,7 @@ export const profile = {
         en: "The site you're looking at: built with Next.js, with an AI assistant that answers questions on my behalf.",
       },
       tags: ["Next.js", "TypeScript", "Tailwind", "Claude API"],
-      link: "https://github.com/your-name/portfolio",
+      link: "https://github.com/smartqy/portfolio",
       date: "2026",
     },
     {
