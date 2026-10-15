@@ -3,18 +3,10 @@ import { useLang } from "@/i18n";
 import { ContactSection } from "./contact-section";
 import { FunSection } from "./fun-section";
 import { ProjectsSection } from "./projects-section";
+import { SkillsSection } from "./skills-section";
 import type { CardKey } from "./quick-actions";
 
 const cardClass = "rounded-2xl border border-border bg-card p-5 shadow-[0_1px_2px_rgb(0_0_0/0.03),0_8px_24px_-12px_rgb(15_118_110/0.12)] backdrop-blur-md";
-
-function SectionTitle({ title, subtitle }: { title: string; subtitle: string }) {
-  return (
-    <div className="mb-6 space-y-1">
-      <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-      <p className="text-muted">{subtitle}</p>
-    </div>
-  );
-}
 
 function MeCard() {
   const { p: profile, ui } = useLang();
@@ -103,33 +95,10 @@ function MeCard() {
   );
 }
 
-function SkillsCard() {
-  const { p: profile, ui } = useLang();
-  return (
-    <div>
-      <SectionTitle {...ui.sections.skills} />
-      <div className="grid gap-4 sm:grid-cols-2">
-        {profile.skills.map((s) => (
-          <div key={s.category} className={cardClass}>
-            <h3 className="mb-3 font-semibold">{s.category}</h3>
-            <div className="flex flex-wrap gap-2">
-              {s.items.map((item) => (
-                <span key={item} className="rounded-full bg-foreground/5 px-3 py-1 text-sm">
-                  {item}
-                </span>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export const CARDS: Record<CardKey, () => React.JSX.Element> = {
   me: MeCard,
   projects: ProjectsSection,
-  skills: SkillsCard,
+  skills: SkillsSection,
   fun: FunSection,
   contact: ContactSection,
 };

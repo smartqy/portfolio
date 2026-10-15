@@ -84,7 +84,7 @@ export const profile = {
     },
   ],
 
-  // 项目：category 用于 Projects 页面的筛选（ai / cv / systems / algo）；link、date 可留空
+  // 项目：category 是卡片上的分类（ai / cv / systems / algo）；cover 是卡片插画和渐变色；link、date 可留空
   projects: [
     {
       title: { zh: "AI 驱动营销分析多智能体系统", en: "Multi-Agent Marketing Analytics System" },
@@ -94,6 +94,7 @@ export const profile = {
       },
       tags: ["Python", "LangChain", "OpenAI API", "Neo4j", "ReAct"],
       category: "ai",
+      cover: { image: "/projects/marketing.png", from: "#2f3270", to: "#8e93e6" }, // 卡片插画 + 渐变色（深 → 浅）
       link: "",
       date: "",
     },
@@ -105,6 +106,7 @@ export const profile = {
       },
       tags: ["Next.js", "TypeScript", "Tailwind", "DeepSeek API"],
       category: "ai",
+      cover: { image: "/projects/portfolio.png", from: "#0d4f49", to: "#4fc1ae" }, // 卡片插画 + 渐变色（深 → 浅）
       link: "https://github.com/smartqy/portfolio",
       date: "2026",
     },
@@ -116,6 +118,7 @@ export const profile = {
       },
       tags: ["Java", "Quarkus", "RabbitMQ", "Docker", "Saga", "Cucumber"],
       category: "systems",
+      cover: { image: "/projects/dtupay.png", from: "#173451", to: "#6aa3db" }, // 卡片插画 + 渐变色（深 → 浅）
       link: "",
       date: "",
     },
@@ -127,6 +130,7 @@ export const profile = {
       },
       tags: ["Java", "MA-CBS", "CBS", "A*", "Weighted A*"],
       category: "algo",
+      cover: { image: "/projects/macbs.png", from: "#7a3517", to: "#f0a35e" }, // 卡片插画 + 渐变色（深 → 浅）
       link: "",
       date: "",
     },
@@ -138,6 +142,7 @@ export const profile = {
       },
       tags: ["PyTorch", "ResNet18", "3D CNN", "Optical Flow"],
       category: "cv",
+      cover: { image: "/projects/video.png", from: "#3d2266", to: "#b08be3" }, // 卡片插画 + 渐变色（深 → 浅）
       link: "",
       date: "",
     },
@@ -149,6 +154,7 @@ export const profile = {
       },
       tags: ["PyTorch", "U-Net", "Weak Supervision", "Dice / IoU"],
       category: "cv",
+      cover: { image: "/projects/unet.png", from: "#33291f", to: "#f3d6b4" }, // 卡片插画 + 渐变色（深 → 浅）
       link: "",
       date: "",
     },
@@ -160,6 +166,7 @@ export const profile = {
       },
       tags: ["PyTorch", "R-CNN", "Selective Search", "NMS"],
       category: "cv",
+      cover: { image: "/projects/rcnn.png", from: "#5c4508", to: "#f2c94c" }, // 卡片插画 + 渐变色（深 → 浅）
       link: "",
       date: "",
     },
@@ -171,6 +178,7 @@ export const profile = {
       },
       tags: ["PyTorch", "CNN", "ResNet18", "YOLOv12n"],
       category: "cv",
+      cover: { image: "/projects/hotdog.png", from: "#7a2424", to: "#f39a7a" }, // 卡片插画 + 渐变色（深 → 浅）
       link: "",
       date: "",
     },
@@ -182,37 +190,46 @@ export const profile = {
       },
       tags: ["Python", "NumPy", "Numba", "CUDA", "CuPy"],
       category: "systems",
+      cover: { image: "/projects/jacobi.png", from: "#1a4430", to: "#8fd3a3" }, // 卡片插画 + 渐变色（深 → 浅）
       link: "",
       date: "",
     },
   ],
 
+  // icon 可选：bot / search / server / eye / cpu / route / wand
   skills: [
     {
+      icon: "bot",
       category: { zh: "AI / 大模型", en: "AI / LLM" },
       items: ["OpenAI API", "LangChain", "LangGraph", "Agent Workflow", "Tool Calling", "Structured Output", "Pydantic", "Prompt Engineering"],
     },
     {
+      icon: "search",
       category: { zh: "RAG / 检索", en: "RAG / Retrieval" },
       items: ["RAG Pipeline", "Hybrid Retrieval", "BM25", "FAISS", "Pinecone", "MultiQuery", "RRF", "Reranking", "Citation Grounding", "Chunking"],
     },
     {
+      icon: "server",
       category: { zh: "后端 / 工程", en: "Backend / Engineering" },
       items: ["Python", "Java", "SQL", "FastAPI", "Quarkus", "REST API", "WebSocket", "RabbitMQ", "Microservices", "Docker", "Jenkins", "Git", "Linux"],
     },
     {
+      icon: "eye",
       category: { zh: "机器学习 / 视觉", en: "ML / Computer Vision" },
       items: ["PyTorch", "Scikit-learn", "NumPy", "Pandas", "CNN", "ResNet", "U-Net", "R-CNN", "YOLO"],
     },
     {
+      icon: "cpu",
       category: { zh: "高性能计算", en: "HPC" },
       items: ["Multiprocessing", "Numba", "CUDA", "CuPy", "Nsight Systems"],
     },
     {
+      icon: "route",
       category: { zh: "算法", en: "Algorithms" },
       items: ["A*", "CBS / MA-CBS", "Heuristic Search", "Multi-Agent Path Planning"],
     },
     {
+      icon: "wand",
       category: { zh: "AI 开发工具", en: "AI Dev Tools" },
       items: ["Claude", "Cursor", "GitHub Copilot", "ChatGPT"],
     },

@@ -1,111 +1,178 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
-import { useState } from "react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, X } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import { useLang } from "@/i18n";
 
-type Filter = "all" | "ai" | "cv" | "systems" | "algo";
-const FILTERS: Filter[] = ["all", "ai", "cv", "systems", "algo"];
-
-// 每个分类一个小圆点颜色，和快捷按钮的图标色系一致
-const DOT: Record<Exclude<Filter, "all">, string> = {
-  ai: "bg-(--icon-me)",
-  cv: "bg-(--icon-skills)",
-  systems: "bg-(--icon-projects)",
-  algo: "bg-(--icon-contact)",
-};
+type Category = "ai" | "cv" | "systems" | "algo";
 
 export function ProjectsSection() {
   const { p: profile, ui } = useLang();
-  const [filter, setFilter] = useState<Filter>("all");
-  const projects = profile.projects.filter((p) => filter === "all" || p.category === filter);
-  const count = (f: Filter) => profile.projects.filter((p) => f === "all" || p.category === f).length;
+  const scroller = useRef<HTMLDivElement>(null);
+  const [edges, setEdges] = useState({ start: true, end: false });
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const open = openIndex === null ? null : profile.projects[openIndex];
+
+  // 根据滚动位置决定左右箭头是否可点
+  const updateEdges = () => {
+    const el = scroller.current;
+    if (!el) return;
+    setEdges({ start: el.scrollLeft < 8, end: el.scrollLeft + el.clientWidth > el.scrollWidth - 8 });
+  };
+  useEffect(updateEdges, []);
+
+  const scrollByCard = (dir: 1 | -1) => {
+    const el = scroller.current;
+    const card = el?.querySelector<HTMLElement>("[data-card]");
+    if (!el || !card) return;
+    el.scrollBy({ left: dir * (card.offsetWidth + 16), behavior: "smooth" });
+  };
+
+  // 详情弹窗：Esc 关闭，打开时锁定页面滚动
+  useEffect(() => {
+    if (openIndex === null) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpenIndex(null);
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [openIndex]);
 
   return (
     <div>
-      <div className="mb-6 space-y-1">
-        <h2 className="text-2xl font-semibold tracking-tight">{ui.sections.projects.title}</h2>
+      <div className="mb-8 space-y-2">
+        <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">{ui.sections.projects.title}</h2>
         <p className="text-muted">{ui.sections.projects.subtitle}</p>
       </div>
 
-      {/* 分类筛选 */}
-      <div className="mb-5 flex flex-wrap gap-2">
-        {FILTERS.filter((f) => count(f) > 0).map((f) => {
-          const active = filter === f;
+      {/* 横向滑动的卡片 */}
+      <div
+        ref={scroller}
+        onScroll={updateEdges}
+        className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pt-2 pb-6 scrollbar-none [mask-image:linear-gradient(to_right,transparent,black_16px,black_calc(100%-56px),transparent)]"
+      >
+        {profile.projects.map((p, i) => (
+          <motion.button
+            key={p.title}
+            type="button"
+            data-card
+            onClick={() => setOpenIndex(i)}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: Math.min(i, 4) * 0.06, ease: [0.22, 1, 0.36, 1] }}
+            whileHover={{ y: -6 }}
+            className="group relative flex aspect-[7/10] w-[72vw] max-w-[300px] shrink-0 snap-start flex-col justify-start overflow-hidden rounded-[2rem] text-left shadow-[0_20px_40px_-24px_rgb(0_0_0/0.45)] sm:w-[300px]"
+            style={{ background: `linear-gradient(180deg, ${p.cover.from} 0%, ${p.cover.to} 72%)` }}
+          >
+            <div className="relative z-10 p-6 text-white">
+              <p className="text-sm font-medium text-white/80">{ui.projectFilters[p.category as Category]}</p>
+              <h3 className="mt-1.5 text-[1.65rem] leading-tight font-semibold tracking-tight [text-wrap:balance]">
+                {p.title}
+              </h3>
+            </div>
+            <Image
+              src={p.cover.image}
+              alt=""
+              width={256}
+              height={256}
+              className="absolute right-[-8%] bottom-[-4%] w-[82%] drop-shadow-[0_24px_30px_rgb(0_0_0/0.25)] transition-transform duration-500 ease-out group-hover:scale-105 group-hover:-rotate-3"
+            />
+          </motion.button>
+        ))}
+      </div>
+
+      <div className="mt-2 flex justify-end gap-3">
+        {([-1, 1] as const).map((dir) => {
+          const disabled = dir === -1 ? edges.start : edges.end;
           return (
             <button
-              key={f}
+              key={dir}
               type="button"
-              onClick={() => setFilter(f)}
-              aria-pressed={active}
-              className={`relative flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm transition-colors duration-300 ${
-                active ? "text-accent-foreground" : "border border-border bg-card text-muted hover:text-foreground"
-              }`}
+              aria-label={dir === -1 ? ui.prev : ui.next}
+              disabled={disabled}
+              onClick={() => scrollByCard(dir)}
+              className="flex size-12 items-center justify-center rounded-full border border-border bg-card backdrop-blur-md transition hover:border-accent/40 disabled:opacity-35"
             >
-              {active && (
-                <motion.span
-                  layoutId="project-filter"
-                  className="absolute inset-0 rounded-full bg-accent"
-                  transition={{ type: "spring", stiffness: 420, damping: 34 }}
-                />
-              )}
-              {f !== "all" && <span className={`relative size-1.5 rounded-full ${DOT[f]}`} />}
-              <span className="relative">{ui.projectFilters[f]}</span>
-              <span className={`relative text-xs tabular-nums ${active ? "opacity-70" : "opacity-60"}`}>{count(f)}</span>
+              {dir === -1 ? <ArrowLeft className="size-5" /> : <ArrowRight className="size-5" />}
             </button>
           );
         })}
       </div>
 
-      <motion.div layout className="grid gap-4 sm:grid-cols-2">
-        <AnimatePresence mode="popLayout">
-          {projects.map((p) => {
-            const cat = p.category as Exclude<Filter, "all">;
-            const inner = (
-              <>
-                <div className="flex items-start justify-between gap-3">
-                  <h3 className="font-semibold leading-snug">{p.title}</h3>
-                  <span className="flex shrink-0 items-center gap-1 text-xs text-muted">
-                    {p.date}
-                    {p.link && <ArrowUpRight className="size-4 transition group-hover:text-accent" />}
-                  </span>
+      {/* 项目详情弹窗 */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="fixed inset-0 z-40 flex items-end justify-center bg-black/40 p-0 backdrop-blur-sm sm:items-center sm:p-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setOpenIndex(null)}
+          >
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-label={open.title}
+              onClick={(e) => e.stopPropagation()}
+              initial={{ y: 40, opacity: 0, scale: 0.98 }}
+              animate={{ y: 0, opacity: 1, scale: 1 }}
+              exit={{ y: 40, opacity: 0, scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 320, damping: 30 }}
+              className="max-h-[90dvh] w-full max-w-xl overflow-y-auto rounded-t-[2rem] bg-background shadow-2xl sm:rounded-[2rem]"
+            >
+              <div
+                className="relative h-48 overflow-hidden"
+                style={{ background: `linear-gradient(160deg, ${open.cover.from} 0%, ${open.cover.to} 100%)` }}
+              >
+                <div className="relative z-10 p-6 text-white">
+                  <p className="text-sm font-medium text-white/80">{ui.projectFilters[open.category as Category]}</p>
+                  <h3 className="mt-1 max-w-[70%] text-2xl leading-tight font-semibold tracking-tight">{open.title}</h3>
                 </div>
-                <p className="mt-1.5 flex items-center gap-1.5 text-xs text-muted">
-                  <span className={`size-1.5 rounded-full ${DOT[cat]}`} />
-                  {ui.projectFilters[cat]}
-                </p>
-                <p className="mt-3 flex-1 text-sm leading-relaxed text-foreground/75">{p.description}</p>
-                <div className="mt-4 flex flex-wrap gap-1.5">
-                  {p.tags.map((t) => (
-                    <span key={t} className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs text-accent">
+                <Image
+                  src={open.cover.image}
+                  alt=""
+                  width={256}
+                  height={256}
+                  className="absolute right-4 -bottom-6 w-44 drop-shadow-[0_20px_24px_rgb(0_0_0/0.25)]"
+                />
+                <button
+                  type="button"
+                  aria-label={ui.close}
+                  onClick={() => setOpenIndex(null)}
+                  className="absolute top-4 right-4 z-20 flex size-9 items-center justify-center rounded-full bg-black/25 text-white backdrop-blur transition hover:bg-black/40"
+                >
+                  <X className="size-4" />
+                </button>
+              </div>
+              <div className="space-y-5 p-6">
+                <p className="leading-relaxed text-foreground/85">{open.description}</p>
+                <div className="flex flex-wrap gap-2">
+                  {open.tags.map((t) => (
+                    <span key={t} className="rounded-xl bg-foreground px-3 py-1.5 text-sm text-background">
                       {t}
                     </span>
                   ))}
                 </div>
-              </>
-            );
-            const className =
-              "group flex flex-col rounded-2xl border border-border bg-card p-5 shadow-[0_1px_2px_rgb(0_0_0/0.03),0_8px_24px_-12px_rgb(15_118_110/0.12)] backdrop-blur-md transition-shadow duration-300 hover:shadow-[0_16px_36px_-16px_rgb(15_118_110/0.3)]";
-            const motionProps = {
-              layout: true,
-              initial: { opacity: 0, scale: 0.97 },
-              animate: { opacity: 1, scale: 1 },
-              exit: { opacity: 0, scale: 0.97 },
-              transition: { duration: 0.25 },
-            };
-            return p.link ? (
-              <motion.a key={p.title} href={p.link} target="_blank" rel="noreferrer" className={className} {...motionProps}>
-                {inner}
-              </motion.a>
-            ) : (
-              <motion.div key={p.title} className={className} {...motionProps}>
-                {inner}
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
-      </motion.div>
+                {open.link && (
+                  <a
+                    href={open.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition hover:opacity-90"
+                  >
+                    {ui.viewProject}
+                    <ArrowUpRight className="size-4" />
+                  </a>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
